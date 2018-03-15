@@ -30,13 +30,13 @@ def validate_zet1_add(list, index):
 
 
 def validate_zet2_add(list, index):
-    if ((index//10) > 8) or ((index%10) > 8) or ((index%10) < 2):
+    if (index//10 == 9) or ((index%10) == 9) or (index%10 == 0):
         return False
     return list[index].wc() == 'white' and list[index+1].wc() == 'white' and list[index+10].wc() == 'white' and list[index+9].wc() == 'white'
 
 
 def validate_c1_add(list, index):
-    if (index//10) > 8 or (index%10) < 2:
+    if (index//10) > 8 or (index%10) == 0:
         return False
     return list[index].wc() == 'white' and list[index+10].wc() == 'white' and list[index+9].wc() == 'white'
 
@@ -59,6 +59,7 @@ def random_shape(difficulty):
     easy_shapes = ['c1', 'c2', 'c3', 'c4', 'square', 'horizontal line', 'vertical line', 'Lsus', 'zet1', 'zet2', 'c1', 'c2', 'c3', 'c4']
     medium_shapes = ['square', 'horizontal line', 'vertical line', 'Lsus', 'zet1', 'zet2', 'c1', 'c2', 'c3', 'c4']
     hard_shapes = ['horizontal line', 'vertical line', 'zet1', 'zet2', 'Lsus', 'square', 'horizontal line', 'vertical line', 'Lsus', 'zet1', 'zet2', 'c1', 'c2', 'c3', 'c4']
+
     if difficulty == 'easy':
         return easy_shapes[randint(0, len(easy_shapes) - 1)]
     if difficulty == 'medium':

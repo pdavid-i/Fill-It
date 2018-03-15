@@ -4,6 +4,28 @@ from functools import *
 from functionalities import *
 from domain import *
 
+
+class ImgLabel():
+    def __init__(self, button):
+        self.button = button
+        self.poza = None
+        self.shape = None
+        self.stop = PhotoImage(file="photos\emptypiece.gif")
+        self.button.config(image = self.stop, width=28, height=28)
+    def update_photo(self):
+        if self.shape in ['square', 'c1', 'c2', 'c3', 'c4']:
+            self.button.config(image = self.poza, width=30, height=30)
+        if self.shape == 'Lsus':
+            self.button.config(image=self.poza, width=30, height=50)
+        if self.shape in ['zet1', 'zet2']:
+            self.button.config(image=self.poza, width=60, height=40)
+        if self.shape == 'horizontal line':
+            self.button.config(image=self.poza, width=70, height=9)
+        if self.shape == 'vertical line':
+            self.button.config(image=self.poza, width=9, height=70)
+    def no_photo(self):
+        self.button.config(image = self.stop, width=28, height=28)
+
 class Option:
     def __init__(self, button, difficulty):
         self.difficulty = difficulty
@@ -11,43 +33,43 @@ class Option:
         self.shape = random_shape(self.difficulty)
         if self.shape == 'c1':
             self.poza = PhotoImage(file="photos\c1.gif")
-            self.function = partial(set_c1, self)
+            self.function = partial(upload, self, set_c1)
             self.button.configure(image=self.poza, command=self.function, width=60, height=40)
         if self.shape == 'c2':
             self.poza = PhotoImage(file="photos\c2.gif")
-            self.function = partial(set_c2, self)
+            self.function = partial(upload, self, set_c2)
             self.button.configure(image=self.poza, command=self.function, width=60, height=40)
         if self.shape == 'c3':
             self.poza = PhotoImage(file="photos\c3.gif")
-            self.function = partial(set_c3, self)
+            self.function = partial(upload, self, set_c3)
             self.button.configure(image=self.poza, command=self.function, width=60, height=40)
         if self.shape == 'c4':
             self.poza = PhotoImage(file="photos\c4.gif")
-            self.function = partial(set_c4, self)
+            self.function = partial(upload, self, set_c4)
             self.button.configure(image=self.poza, command=self.function, width=60, height=40)
         if self.shape == 'zet2':
             self.poza = PhotoImage(file="photos\zet2.gif")
-            self.function = partial(set_zet2, self)
+            self.function = partial(upload, self, set_zet2)
             self.button.configure(image=self.poza, command=self.function, width=70, height=47)
         if self.shape == 'zet1':
             self.poza = PhotoImage(file="photos\zet1.gif")
-            self.function = partial(set_zet1, self)
+            self.function = partial(upload, self, set_zet1)
             self.button.configure(image=self.poza, command=self.function, width=70, height=47)
         if self.shape == 'square':
             self.poza = PhotoImage(file="photos\square.gif")
-            self.function = partial(set_square, self)
+            self.function = partial(upload, self, set_square)
             self.button.configure(image=self.poza, command=self.function, width=60, height=60)
         if self.shape == 'horizontal line':
-            self.function = partial(set_line, self)
             self.poza = PhotoImage(file="photos\horizontal.gif")
-            self.button.configure(image=self.poza, command=self.function, width=90, height=10)
+            self.function = partial(upload, self, set_line)
+            self.button.configure(image=self.poza, command=self.function, width=80, height=10)
         if self.shape == 'vertical line':
             self.poza = PhotoImage(file="photos\lvertical.gif")
-            self.function = partial(set_vertical, self)
-            self.button.configure(image=self.poza, command=self.function, width=10, height=100)
+            self.function = partial(upload, self, set_vertical)
+            self.button.configure(image=self.poza, command=self.function, width=10, height=80)
         if self.shape == 'Lsus':
-            self.function = partial(set_Lsus, self)
             self.poza = PhotoImage(file="photos\Lsus.gif")
+            self.function = partial(upload, self, set_Lsus)
             self.button.configure(image=self.poza, command=self.function, width=30, height=70)
 
     def reroll(self):
@@ -55,121 +77,125 @@ class Option:
         self.shape = random_shape(self.difficulty)
         if self.shape == 'c1':
             self.poza = PhotoImage(file="photos\c1.gif")
-            self.function = partial(set_c1, self)
+            self.function = partial(upload, self, set_c1)
             self.button.configure(image=self.poza, command=self.function, width=60, height=40)
         if self.shape == 'c2':
             self.poza = PhotoImage(file="photos\c2.gif")
-            self.function = partial(set_c2, self)
+            self.function = partial(upload, self, set_c2)
             self.button.configure(image=self.poza, command=self.function, width=60, height=40)
         if self.shape == 'c3':
             self.poza = PhotoImage(file="photos\c3.gif")
-            self.function = partial(set_c3, self)
+            self.function = partial(upload, self, set_c3)
             self.button.configure(image=self.poza, command=self.function, width=60, height=40)
         if self.shape == 'c4':
             self.poza = PhotoImage(file="photos\c4.gif")
-            self.function = partial(set_c4, self)
+            self.function = partial(upload, self, set_c4)
             self.button.configure(image=self.poza, command=self.function, width=60, height=40)
         if self.shape == 'zet2':
             self.poza = PhotoImage(file="photos\zet2.gif")
-            self.function = partial(set_zet2, self)
+            #self.function = partial(set_zet2, self)
+            self.function = partial(upload, self, set_zet2)
             self.button.configure(image=self.poza, command=self.function, width=70, height=47)
         if self.shape == 'zet1':
             self.poza = PhotoImage(file="photos\zet1.gif")
-            self.function = partial(set_zet1, self)
+            #self.function = partial(set_zet1, self)
+            self.function = partial(upload, self, set_zet1)
             self.button.configure(image=self.poza, command=self.function, width=70, height=47)
         if self.shape == 'square':
             self.poza = PhotoImage(file="photos\square.gif")
-            self.function = partial(set_square, self)
+            self.function = partial(upload, self, set_square)
+            #self.function = partial(set_square, self)
             self.button.configure(image=self.poza, command=self.function, width=60, height=60)
         if self.shape == 'horizontal line':
-            self.function = partial(set_line, self)
+            #self.function = partial(set_line, self)
             self.poza = PhotoImage(file="photos\horizontal.gif")
-            self.button.configure(image=self.poza, command=self.function, width=90, height=10)
+            self.function = partial(upload, self, set_line)
+            self.button.configure(image=self.poza, command=self.function, width=80, height=10)
         if self.shape == 'vertical line':
             self.poza = PhotoImage(file="photos\lvertical.gif")
-            self.function = partial(set_vertical, self)
-            self.button.configure(image=self.poza, command=self.function, width=10, height=100)
+            #self.function = partial(set_vertical, self)
+            self.function = partial(upload, self, set_vertical)
+            self.button.configure(image=self.poza, command=self.function, width=10, height=80)
         if self.shape == 'Lsus':
-            self.function = partial(set_Lsus, self)
+            #self.function = partial(set_Lsus, self)
             self.poza = PhotoImage(file="photos\Lsus.gif")
+            self.function = partial(upload, self, set_Lsus)
             self.button.configure(image=self.poza, command=self.function, width=30, height=70)
+
+def upload(option, function):
+    global current_piece_ImgLabel
+    current_piece_ImgLabel.poza = option.poza
+    current_piece_ImgLabel.shape = option.shape
+    current_piece_ImgLabel.update_photo()
+
+    function(option)
 
 def set_Lsus(Option):
     global shape
-    if shape != '0':
-        return False
+    global option_button
+    option_button = Option
     shape = 'Lsus'
-    Option.reroll()
-
 
 def set_vertical(Option):
     global shape
-    if shape != '0':
-        return False
     shape = 'vertical line'
-    Option.reroll()
+    global option_button
+    option_button = Option
 
 def set_square(Option):
     global shape
-    if shape != '0':
-        return False
     shape = 'square'
-    Option.reroll()
+    global option_button
+    option_button = Option
 
 def set_zet1(Option):
     global shape
-    if shape != '0':
-        return False
     shape = 'zet1'
-    Option.reroll()
+    global option_button
+    option_button = Option
 
 def set_zet2(Option):
     global shape
-    if shape != '0':
-        return False
     shape = 'zet2'
-    Option.reroll()
+    global option_button
+    option_button = Option
 
 def set_c1(Option):
     global shape
-    if shape != '0':
-        return False
     shape = 'c1'
-    Option.reroll()
+    global option_button
+    option_button = Option
 
 def set_c2(Option):
     global shape
-    if shape != '0':
-        return False
     shape = 'c2'
-    Option.reroll()
+    global option_button
+    option_button = Option
 
 def set_c3(Option):
     global shape
-    if shape != '0':
-        return False
     shape = 'c3'
-    Option.reroll()
+    global option_button
+    option_button = Option
 
 def set_c4(Option):
     global shape
-    if shape != '0':
-        return False
     shape = 'c4'
-    Option.reroll()
+    global option_button
+    option_button = Option
 
 
 def set_line(Option):
     global shape
-    if shape != '0':
-        return False
+    global option_button
+    option_button = Option
     shape = 'horizontal line'
-    Option.reroll()
 
 def color(button_list, index):
     global game_board
     global src_fct
     global shape
+    global option_button
     global up_border_score
     global up_border_highscore
     if shape == '0':
@@ -182,45 +208,60 @@ def color(button_list, index):
         if validate_c2_add(button_list, index):
             game_board.add_c2(index)
             shape = '0'
+
     if shape == 'c3':
         if validate_c3_add(button_list, index):
             game_board.add_c3(index)
             shape = '0'
+
     if shape == 'c4':
         if validate_c4_add(button_list, index):
             game_board.add_c4(index)
             shape = '0'
+
     if shape == 'zet2':
         if validate_zet2_add(button_list, index):
             game_board.add_zet2(index)
             shape = '0'
+
     if shape == 'zet1':
         if validate_zet1_add(button_list, index):
             game_board.add_zet1(index)
             shape = '0'
+
     if shape == 'square':
         if validate_square_add(button_list, index):
             game_board.add_square(index)
             shape = '0'
+
     if shape == 'horizontal line':
         if validate_line_add(button_list, index):
             game_board.add_horizontal_line(index)
             shape = '0'
+
+
     if shape == 'vertical line':
         if validate_vertical_add(button_list, index):
             game_board.add_vertical_line(index)
             shape = '0'
+
     if shape == 'Lsus':
         if validate_Lsus_add(button_list, index):
             game_board.add_Lsus(index)
             shape = '0'
+
+    global current_piece_ImgLabel
+    if (shape == '0'):
+        option_button.reroll()
+        current_piece_ImgLabel.no_photo()
+
     game_board.tick()
     current_score = game_board.score()
     highscore = read_highscore()
-    up_border_score.configure(text=str(current_score), font="Times 10 bold")
+    up_border_score.configure(text=str(current_score), font="Calibri 10 bold")
     if (current_score > highscore):
         update_highscore(current_score)
-        up_border_highscore.config(text=str(current_score))
+        up_border_highscore.config(text=str(current_score), font="Calibri 10 bold")
 
    # scor = Button(secondary_frame)
     #scor.configure(text=str(game_board.score()))
@@ -232,11 +273,13 @@ def main(difficulty):
 
     global up_border_score
     global up_border_highscore
+    global current_piece_ImgLabel
     main_frame = Frame(root)
     main_frame_border_left = Frame(root)
     main_frame_border_right = Frame(root)
     main_frame_border_down = Frame(root, bg="blue")
     main_frame_border_up = Frame(root)
+    current_piece = Frame(root, bg = "cyan")
     options = Frame(root, bg="cyan")
     button_list = []
     global game_board
@@ -254,24 +297,24 @@ def main(difficulty):
 
     button_one = Button(options, text="one")
     button_one.configure(height=5, width=9)
-    button_one.grid(column=0, row = 0, padx=20, pady=20)
+    button_one.grid(column=0, row = 0, padx=20, pady=5)
     option_1 = Option(button_one, difficulty)
 
     button_two = Button(options, text="two")
     button_two.configure(height=5, width=9)
-    button_two.grid(column=1, row = 0, padx=80, pady=20)
+    button_two.grid(column=1, row = 0, padx=80, pady=5)
     option_2 = Option(button_two, difficulty)
 
     button_three = Button(options, text="last")
     button_three.configure(height=5, width=9)
-    button_three.grid(column=2, row = 0, padx=20, pady=20)
+    button_three.grid(column=2, row = 0, padx=20, pady=5)
     option_3 = Option(button_three, difficulty)
 
     left_border = Label(main_frame_border_left,width = 5, height=27, bg = "cyan")
     left_border.pack(fill=BOTH)
     right_border = Label(main_frame_border_right, width=5, height=27, bg="cyan")
     right_border.pack()
-    down_border = Label(main_frame_border_down, bg = "cyan", width = 65, height=4)
+    down_border = Label(main_frame_border_down, bg = "cyan", width = 65, height=1)
     down_border.pack()
     #####################
     trophy_image = PhotoImage(file="photos/trophy.gif")
@@ -280,10 +323,10 @@ def main(difficulty):
 
     #####################
     up_border_left_border = Label(main_frame_border_up, bg = "cyan",width=11, height=6)
-    up_border_score_image = Label(main_frame_border_up,bg= "cyan", width = 10, height=6, text="Scor")
+    up_border_score_image = Label(main_frame_border_up,bg= "cyan", width = 10, height=6, text="SCOR:", font="Calibri 10")
     up_border_score = Label(main_frame_border_up, bg="cyan", width=10, height = 6, text="    ")
     up_border_highscore_image = Label(main_frame_border_up,bg= "cyan", width = 65, height=92, image=trophy_image)
-    up_border_highscore = Label(main_frame_border_up, bg="cyan", width=10, height=6, text=read_highscore())
+    up_border_highscore = Label(main_frame_border_up, bg="cyan", width=10, height=6, text=read_highscore(), font="Calibri 10")
     up_border_right_border = Label(main_frame_border_up, bg="cyan", width=11, height = 6)
 
     up_border_left_border.grid(row = 0, column = 0)
@@ -295,8 +338,12 @@ def main(difficulty):
 
 
 
+    current_piece_label = Label(current_piece)
+    current_piece_ImgLabel = ImgLabel(current_piece_label)
 
-
+    current_piece_text = Label(current_piece, font="Calibri", text = "                                      Current piece:                                  ",fg="red", bg = "cyan")
+    current_piece_text.grid(row = 0, column = 0)
+    current_piece_ImgLabel.button.grid(row = 0, column = 1)
 
 
     ####################
@@ -305,7 +352,9 @@ def main(difficulty):
     main_frame.grid(row = 1, column = 1, columnspan = 3)
     main_frame_border_right.grid(row = 1, column = 4)
     main_frame_border_down.grid(row = 2, columnspan = 5)
-    options.grid(row = 3, columnspan=5,sticky=W+E+N+S)
+    current_piece.config(bg="cyan")
+    current_piece.grid(row=3, columnspan = 5,sticky=W+E+N+S)
+    options.grid(row = 4, columnspan=5,sticky=W+E+N+S)
    # secondary_frame.grid(row = 1, column = 0, columnspan = 3)
     #for child in root.winfo_children(): child.grid_configure(padx=1, pady=1)
     root.mainloop()
