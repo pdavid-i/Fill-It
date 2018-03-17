@@ -1,6 +1,4 @@
-from tkinter import *
-from functools import partial
-from board import main
+from board import *
 
 
 dificulty = 'easy'
@@ -73,18 +71,20 @@ def start_game(menu):
     hard_button.pack(fill=BOTH)
 
 
-    #main()
+def play():
 
-start_menu = Tk()
-poza_cu_pug = PhotoImage(file = "photos\game_start.gif")
-poza_cu_play = PhotoImage(file = "photos\play_button.gif")
-poza_cu_intrebare = PhotoImage(file = "photos\question_button.gif")
-label_pug = Label(start_menu, image = poza_cu_pug)
-fct = partial(start_game, start_menu)
-start_button = Button(image = poza_cu_play, command = fct)
-question_button = Button(image = poza_cu_intrebare, height=100, width=100, command=instructions_menu)
-label_pug.grid(row = 0, columnspan = 2)
-start_button.grid(row = 1, column = 0)
-question_button.grid(row = 1, column = 1)
+    start_menu = Tk()
+    poza_cu_pug = PhotoImage(file = "photos\game_start.gif")
+    poza_cu_play = PhotoImage(file = "photos\play_button.gif")
+    poza_cu_intrebare = PhotoImage(file = "photos\question_button.gif")
+    label_pug = Label(start_menu, image = poza_cu_pug)
+    fct = partial(start_game, start_menu)
+    start_button = Button(image = poza_cu_play, command = fct)
+    question_button = Button(image = poza_cu_intrebare, height=100, width=100, command=instructions_menu)
+    label_pug.grid(row = 0, columnspan = 2)
+    start_button.grid(row = 1, column = 0)
+    question_button.grid(row = 1, column = 1)
 
-start_menu.mainloop()
+    start_menu.mainloop()
+
+play()

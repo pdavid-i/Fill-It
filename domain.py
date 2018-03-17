@@ -91,6 +91,10 @@ class Matrix:
         self.list[index + 20].set_color("green")
         self.list[index + 21].set_color("green")
 
+    def add_point(self, index):
+        self.list[index].set_color("purple")
+
+
     def score(self):
         scor = 0
         for x in self.list:

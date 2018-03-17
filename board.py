@@ -1,9 +1,6 @@
-from tkinter import *
-from tkinter import ttk
 from functools import *
 from functionalities import *
 from domain import *
-
 
 class ImgLabel():
     def __init__(self, button):
@@ -13,7 +10,7 @@ class ImgLabel():
         self.stop = PhotoImage(file="photos\emptypiece.gif")
         self.button.config(image = self.stop, width=28, height=28)
     def update_photo(self):
-        if self.shape in ['square', 'c1', 'c2', 'c3', 'c4']:
+        if self.shape in ['square', 'c1', 'c2', 'c3', 'c4', 'point']:
             self.button.config(image = self.poza, width=30, height=30)
         if self.shape == 'Lsus':
             self.button.config(image=self.poza, width=30, height=50)
@@ -31,6 +28,10 @@ class Option:
         self.difficulty = difficulty
         self.button =  button
         self.shape = random_shape(self.difficulty)
+        if self.shape == 'point':
+            self.poza = PhotoImage(file="photos\point.gif")
+            self.function = partial(upload, self, set_point)
+            self.button.configure(image=self.poza, command=self.function, width=20, height=20)
         if self.shape == 'c1':
             self.poza = PhotoImage(file="photos\c1.gif")
             self.function = partial(upload, self, set_c1)
@@ -75,6 +76,10 @@ class Option:
     def reroll(self):
 
         self.shape = random_shape(self.difficulty)
+        if self.shape == 'point':
+            self.poza = PhotoImage(file="photos\point.gif")
+            self.function = partial(upload, self, set_point)
+            self.button.configure(image=self.poza, command=self.function, width=20, height=20)
         if self.shape == 'c1':
             self.poza = PhotoImage(file="photos\c1.gif")
             self.function = partial(upload, self, set_c1)
@@ -160,6 +165,12 @@ def set_zet2(Option):
     global option_button
     option_button = Option
 
+def set_point(Option):
+    global shape
+    shape = 'point'
+    global option_button
+    option_button = Option
+
 def set_c1(Option):
     global shape
     shape = 'c1'
@@ -191,15 +202,21 @@ def set_line(Option):
     option_button = Option
     shape = 'horizontal line'
 
-def color(button_list, index):
+def color(button_list, index, difficulty):
     global game_board
     global src_fct
     global shape
     global option_button
     global up_border_score
     global up_border_highscore
+    global option_list
+
     if shape == '0':
         return False
+    if shape == 'point':
+        if validate_point_add(button_list, index):
+            game_board.add_point(index)
+            shape = '0'
     if shape == 'c1':
         if validate_c1_add(button_list, index):
             game_board.add_c1(index)
@@ -256,18 +273,37 @@ def color(button_list, index):
         current_piece_ImgLabel.no_photo()
 
     game_board.tick()
-    current_score = game_board.score()
-    highscore = read_highscore()
-    up_border_score.configure(text=str(current_score), font="Calibri 10 bold")
-    if (current_score > highscore):
-        update_highscore(current_score)
-        up_border_highscore.config(text=str(current_score), font="Calibri 10 bold")
+    if difficulty == 'easy':
+        current_score = game_board.score()
+        highscore = read_easy_highscore()
+        up_border_score.configure(text=str(current_score), font="Calibri 10 bold")
+        if (current_score > highscore):
+            update_easy_highscore(current_score)
+            up_border_highscore.config(text=str(current_score), font="Calibri 10 bold")
 
-   # scor = Button(secondary_frame)
-    #scor.configure(text=str(game_board.score()))
-   # scor.grid(row=11)
+    if difficulty == 'medium':
+        current_score = game_board.score()
+        highscore = read_medium_highscore()
+        up_border_score.configure(text=str(current_score), font="Calibri 10 bold")
+        if (current_score > highscore):
+            update_medium_highscore(current_score)
+            up_border_highscore.config(text=str(current_score), font="Calibri 10 bold")
+
+
+    if difficulty == 'hard':
+        current_score = game_board.score()
+        highscore = read_hard_highscore()
+        up_border_score.configure(text=str(current_score), font="Calibri 10 bold")
+        if (current_score > highscore):
+            update_hard_highscore(current_score)
+            up_border_highscore.config(text=str(current_score), font="Calibri 10 bold")
+
+
+    global root
+    is_game_over(button_list, option_list, current_score, root)
 
 def main(difficulty):
+    global root
     root = Tk()
     root.title("Fillit")
 
@@ -290,7 +326,7 @@ def main(difficulty):
     for i in range(100):
         button = Button(main_frame, width=4, height=2, bg="white")
         button.grid(row = i // 10, column = i%10)
-        functie = partial(color, button_list, i)
+        functie = partial(color, button_list, i, difficulty)
         button.configure(command=functie)
         BUM = SquareSpace(button)
         game_board.list.append(BUM)
@@ -309,6 +345,8 @@ def main(difficulty):
     button_three.configure(height=5, width=9)
     button_three.grid(column=2, row = 0, padx=20, pady=5)
     option_3 = Option(button_three, difficulty)
+    global option_list
+    option_list = [option_1, option_2, option_3]
 
     left_border = Label(main_frame_border_left,width = 5, height=27, bg = "cyan")
     left_border.pack(fill=BOTH)
@@ -326,7 +364,13 @@ def main(difficulty):
     up_border_score_image = Label(main_frame_border_up,bg= "cyan", width = 10, height=6, text="SCOR:", font="Calibri 10")
     up_border_score = Label(main_frame_border_up, bg="cyan", width=10, height = 6, text="    ")
     up_border_highscore_image = Label(main_frame_border_up,bg= "cyan", width = 65, height=92, image=trophy_image)
-    up_border_highscore = Label(main_frame_border_up, bg="cyan", width=10, height=6, text=read_highscore(), font="Calibri 10")
+    up_border_highscore = Label(main_frame_border_up, bg="cyan", width=10, height=6, font="Calibri 10")
+    if difficulty == 'easy':
+        up_border_highscore.config(text=read_easy_highscore())
+    if difficulty == 'medium':
+        up_border_highscore.config(text=read_medium_highscore())
+    if difficulty == 'hard':
+        up_border_highscore.config(text=read_hard_highscore())
     up_border_right_border = Label(main_frame_border_up, bg="cyan", width=11, height = 6)
 
     up_border_left_border.grid(row = 0, column = 0)
