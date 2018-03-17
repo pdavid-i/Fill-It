@@ -152,5 +152,5 @@ def is_game_over(button_list, option_list, current_score, board):
             if shape == 'point':
                 if validate_point_add(button_list, index):
                     ok = True
-    if ok == True:
+    if ok == False:
         game_over(current_score, board)
